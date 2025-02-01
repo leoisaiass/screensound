@@ -1,9 +1,13 @@
 package com.screensound.screensound.principal;
 
 import com.screensound.screensound.model.Artista;
+import com.screensound.screensound.model.DadosArtista;
 import com.screensound.screensound.model.Musica;
 import com.screensound.screensound.model.TipoArtista;
 import com.screensound.screensound.repository.ArtistaRepository;
+import com.screensound.screensound.service.ConsumoApi;
+import com.screensound.screensound.service.ConverteDados;
+import com.screensound.screensound.service.traducao.ConsultaMyMemory;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +28,11 @@ public class Principal {
             var menu = """
                     *** Screen Sound Músicas ***
                                         
-                    1- Cadastrar artistas
-                    2- Cadastrar músicas
-                    3- Listar músicas
-                    4- Buscar músicas por artistas
-                    5- Pesquisar dados sobre um artista
+                    1 - Cadastrar artistas
+                    2 - Cadastrar músicas
+                    3 - Listar músicas
+                    4 - Buscar músicas por artistas
+                    5 - Pesquisar dados sobre um artista
                                     
                     9 - Sair
                     """;
@@ -65,8 +69,11 @@ public class Principal {
     private void pesquisarDadosDoArtista() {
         System.out.println("Pesquisar dados sobre qual artista? ");
         var nome = leitura.nextLine();
-//        var resposta = ConsultaChatGPT.obterInformacao(nome);
-//        System.out.println(resposta.trim());
+        var endereco = "https://en.wikipedia.org/api/rest_v1/page/summary/" + nome.replace(" ", "_");
+        var json = new ConsumoApi().obterDados(endereco);
+        var dadosArtista = new ConverteDados().obterDados(json, DadosArtista.class);
+        var resposta = ConsultaMyMemory.obterTraducao(dadosArtista.descricao()).trim();
+        System.out.println(resposta);
     }
 
     private void buscarMusicasPorArtista() {
