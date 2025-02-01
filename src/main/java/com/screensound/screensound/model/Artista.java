@@ -8,22 +8,17 @@ import java.util.List;
 @Entity
 @Table(name = "artistas")
 public class Artista {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true)
     private String nome;
-
     @Enumerated(EnumType.STRING)
     private TipoArtista tipo;
-
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Musica> musicas = new ArrayList<>();
 
-    public Artista() {
-    }
-
+    public Artista() {}
     public Artista(String nome, TipoArtista tipo) {
         this.nome = nome;
         this.tipo = tipo;
@@ -58,17 +53,14 @@ public class Artista {
     }
 
     public void setMusicas(List<Musica> musicas) {
-        musicas.forEach(m -> m.setArtista(this));
         this.musicas = musicas;
     }
 
     @Override
     public String toString() {
-        return "Artista{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", musicas=" + musicas +
-                '}';
+        return
+                "Artista='" + nome + '\'' +
+                        ", tipo=" + tipo +
+                        ", musicas=" + musicas;
     }
 }

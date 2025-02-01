@@ -2,27 +2,20 @@ package com.screensound.screensound.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "musicas")
 public class Musica {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String titulo;
+    @ManyToOne
     private Artista artista;
 
-    public Musica() {
-    }
-
-    public Musica(Long id, String nome, Artista artista) {
-        this.id = id;
-        this.nome = nome;
-        this.artista = artista;
+    public Musica() {}
+    public Musica(String nomeMusica) {
+        this.titulo = nomeMusica;
     }
 
     public Long getId() {
@@ -33,12 +26,12 @@ public class Musica {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public Artista getArtista() {
@@ -51,10 +44,8 @@ public class Musica {
 
     @Override
     public String toString() {
-        return "Musica{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", artista=" + artista +
-                '}';
+        return
+                "Música='" + titulo + '\'' +
+                        ", artista=" + artista.getNome();
     }
 }
